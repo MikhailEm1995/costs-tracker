@@ -1,0 +1,26 @@
+.layout {
+  height: 100%;
+  width: 100%;
+  padding: 5px;
+}
+
+.add-widget {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  padding: 13px;
+  border-radius: 30px;
+
+  cursor: pointer;
+
+  border: none;
+  outline: none;
+
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.add-widget__icon {
+  width: 100%;
+}
