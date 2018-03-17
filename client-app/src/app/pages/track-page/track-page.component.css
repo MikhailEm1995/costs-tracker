@@ -1,0 +1,40 @@
+.wrapper {
+  height: 100%;
+  width: 100%;
+  padding: 5px;
+}
+
+.section {
+  margin-bottom: 10px;
+}
+
+.categories {
+  max-height: 112px;
+
+  overflow-y: scroll;
+}
+
+.delete {
+  flex-basis: 10%;
+
+  border-bottom: 1px solid #F00;
+}
+
+.new-category-form {
+  margin-top: 10px;
+}
+
+.new-category-form__colorpicker {
+  flex: 0 1 auto;
+  height: auto;
+  width: 40px;
+  padding: 3px 5px;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.new-category-form__add-button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  z-index: 999;
+}

@@ -1,3 +1,55 @@
-<p>
-  track-page works!
-</p>
+<div class="wrapper">
+  <div class="card section">
+    <label for="number" class="card-header d-block h6">Number</label>
+    <div class="card-body">
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text">$</div>
+        </div>
+        <input type="number" class="form-control" id="number" placeholder="0">
+      </div>
+    </div>
+  </div>
+  <div class="card section">
+    <div class="card-header h6">Category</div>
+    <div class="card-body">
+      <div class="categories">
+        <div class="btn-group btn-group-toggle btn-group-vertical w-100" data-toggle="buttons">
+          <div class="btn-group w-100">
+            <label class="btn btn-outline-info btn-block">
+              <input type="radio" name="categories" id="meal" autocomplete="off">Meal
+            </label>
+            <button type="button" class="btn btn-danger delete"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="btn-group w-100">
+            <label class="btn btn-outline-info btn-block">
+              <input type="radio" name="categories" id="transport" autocomplete="off">Transport
+            </label>
+            <button type="button" class="btn btn-danger delete"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="btn-group w-100">
+            <label class="btn btn-outline-info btn-block">
+              <input type="radio" name="categories" id="rest" autocomplete="off">Rest
+            </label>
+            <button type="button" class="btn btn-danger delete"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="btn-group w-100">
+            <label class="btn btn-outline-info btn-block">
+              <input type="radio" name="categories" id="test" autocomplete="off">Test
+            </label>
+            <button type="button" class="btn btn-danger delete"><span aria-hidden="true">&times;</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="new-category-form">
+        <label for="add-category">Add new category</label>
+        <div class="input-group">
+          <input id="add-category" class="form-control" placeholder="Category name">
+          <input type="color" class="form-control new-category-form__colorpicker" title="color">
+          <button class="btn btn-success new-category-form__add-button">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
