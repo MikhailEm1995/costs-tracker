@@ -2,11 +2,20 @@
   <app-widget
     title="Абсолютные показатели"
     type="text"
+    period="January"
     [config]="aWidget"
   ></app-widget>
   <app-widget
     title="Тестовый виджет"
     type="text"
+    period="November"
     [config]="secondWidget"
+  ></app-widget>
+  <app-widget
+    title="Тестовый график"
+    type="plot"
+    period="2017"
+    [index]="1"
+    [config]="plotConfig"
   ></app-widget>
 </app-layout>

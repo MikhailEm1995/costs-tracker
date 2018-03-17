@@ -62,5 +62,21 @@ export class AppComponent {
       align: 'right',
       size: 'h5'
     }
-  }
+  };
+  plotConfig = {
+    type: 'line',
+    period: 'month',
+    data: [
+      {
+        name: 'Costs',
+        color: 'red',
+        values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      },
+      {
+        name: 'Income',
+        color: 'green',
+        values: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+      }
+      ]
+  };
 }

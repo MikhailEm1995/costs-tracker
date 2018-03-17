@@ -25,7 +25,7 @@ class TextConfig {
 }
 
 export default class TextWidget {
-  public vars: any;
+  private vars: any;
   private templates: ColTemplates;
   private config: TextConfig;
 
@@ -33,6 +33,22 @@ export default class TextWidget {
     config: TextConfig
   ) {
     this.config = config;
+  }
+
+  public isWatchConditions(): boolean {
+    const { watchConditions } = this.config;
+
+    if (typeof watchConditions !== 'boolean') return false;
+
+    return watchConditions;
+  }
+
+  public isTextWatchForConditions(): boolean {
+    const { isTextWatchForConditions } = this.config;
+
+    if (typeof isTextWatchForConditions !== 'boolean') return false;
+
+    return isTextWatchForConditions;
   }
 
   public parseString(str, vars, handler = null): string {
@@ -49,12 +65,6 @@ export default class TextWidget {
     });
 
     return result;
-  }
-
-  public getTexts(handler): any {
-    return [this.templates.firstCol, this.templates.secondCol].map((templates) => {
-      return templates.map(template => this.parseString(template, this.vars, handler));
-    });
   }
 
   public setTemplates(col, templates): TextWidget {
@@ -79,28 +89,22 @@ export default class TextWidget {
     return this;
   }
 
+  public getTexts(handler): any {
+    return [this.templates.firstCol, this.templates.secondCol].map((templates) => {
+      return templates.map(template => this.parseString(template, this.vars, handler));
+    });
+  }
+
+  public getVars(): any {
+    return this.vars;
+  }
+
   public getNumberOfCols(): number {
     const { colsNumber } = this.config;
 
     if (colsNumber > 2) return 2;
 
     return colsNumber;
-  }
-
-  public isWatchConditions(): boolean {
-    const { watchConditions } = this.config;
-
-    if (typeof watchConditions !== 'boolean') return false;
-
-    return watchConditions;
-  }
-
-  public isTextWatchForConditions(): boolean {
-    const { isTextWatchForConditions } = this.config;
-
-    if (typeof isTextWatchForConditions !== 'boolean') return false;
-
-    return isTextWatchForConditions;
   }
 
   public getFirstColConfig(): ColConfig {
