@@ -1,3 +1,25 @@
-<p>
-  home-page works!
-</p>
+<div class="layout">
+  <button type="button" class="btn btn-light btn-lg btn-block">+ Add widget</button>
+  <app-widget
+    title="Абсолютные показатели"
+    type="text"
+    period="January"
+    [config]="aWidget"
+  ></app-widget>
+  <app-widget
+    title="Тестовый виджет"
+    type="text"
+    period="November"
+    [config]="secondWidget"
+  ></app-widget>
+  <app-widget
+    title="Тестовый график"
+    type="plot"
+    period="2017"
+    [index]="1"
+    [config]="plotConfig"
+  ></app-widget>
+  <button type="button" class="add-widget bg-success">
+    <img src="../../../assets/img/add-plus-button.svg" alt="+" class="add-widget__icon">
+  </button>
+</div>
