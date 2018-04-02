@@ -13,6 +13,7 @@ import {FormsModule} from "@angular/forms";
 import { PlotWidgetComponent } from './components/plot-widget/plot-widget.component';
 import { TextWidgetComponent } from './components/text-widget/text-widget.component';
 import { CapitalizePipe } from './pipes/capitalize/capitalize.pipe';
+import {AppRoutingModule} from "./modules/app-routing/app-routing.module";
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { CapitalizePipe } from './pipes/capitalize/capitalize.pipe';
     CapitalizePipe
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     NgbModule.forRoot(),
     FormsModule

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home-page',
@@ -79,4 +80,12 @@ export class HomePageComponent {
       }
     ]
   };
+
+  constructor(
+    private router: Router
+  ) {}
+
+  navigateToTrackPage(): void {
+    this.router.navigate(['/track']);
+  }
 }
