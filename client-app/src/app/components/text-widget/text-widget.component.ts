@@ -1,19 +1,16 @@
-import {Component, Input, OnInit, AfterViewInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import TextWidget from '../../../consts/classes/TextWidgetConfig';
-import PlotWidget from '../../../consts/classes/PlotWidgetConfig';
 
 import * as math from 'mathjs';
-import * as c3 from 'c3';
 
 @Component({
-  selector: 'app-widget',
-  templateUrl: './widget.component.html',
-  styleUrls: ['./widget.component.scss']
+  selector: 'app-text-widget',
+  templateUrl: './text-widget.component.html',
+  styleUrls: ['./text-widget.component.scss']
 })
-export class WidgetComponent implements OnInit, AfterViewInit {
+export class TextWidgetComponent implements OnInit {
 
   @Input() title: string;
-  @Input() type: string;
   @Input() config: any;
   @Input() index: number;
   @Input('period') timePeriod: string;
@@ -31,35 +28,26 @@ export class WidgetComponent implements OnInit, AfterViewInit {
 
   constructor() {}
 
-  ngAfterViewInit() {
-    if (this.type === 'plot') {
-      const plotConfig = new PlotWidget('#plot-' + this.index, this.config.type, this.config.period, this.config.data).getConfig();
-
-      c3.generate(plotConfig);
-    }
-  }
-
   ngOnInit() {
-    if (this.type === 'text') {
-      this.textWidget = new TextWidget({
-        colsNumber: this.config.colsNumber,
-        watchConditions: this.config.watchConditions,
-        conditions: this.config.conditions,
-        isTextWatchForConditions: this.config.isTextWatchForConditions,
-        firstCol: this.config.firstCol,
-        secondCol: this.config.secondCol
-      });
+    this.textWidget = new TextWidget({
+      colsNumber: this.config.colsNumber,
+      watchConditions: this.config.watchConditions,
+      conditions: this.config.conditions,
+      isTextWatchForConditions: this.config.isTextWatchForConditions,
+      firstCol: this.config.firstCol,
+      secondCol: this.config.secondCol
+    });
 
-      this.textWidget
-        .setVars(this.config.vars)
-        .setTemplates(1, this.config.templates.firstCol)
-        .setTemplates(2, this.config.templates.secondCol);
+    this.textWidget
+      .setVars(this.config.vars)
+      .setTemplates(1, this.config.templates.firstCol)
+      .setTemplates(2, this.config.templates.secondCol);
 
-      this.firstColClassNames = this.getFirstColClassNames();
-      this.secondColClassNames = this.getSecondColClassNames();
+    this.firstColClassNames = this.getFirstColClassNames();
+    this.secondColClassNames = this.getSecondColClassNames();
 
-      this.setBorderColor();
-    }
+    this.setBorderColor();
+
   }
 
   setBorderColor(): void {

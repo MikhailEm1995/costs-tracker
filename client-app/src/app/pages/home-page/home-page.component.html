@@ -1,24 +1,21 @@
 <div class="wrapper">
   <button type="button" class="btn btn-light btn-lg btn-block">+ Add widget</button>
-  <app-widget
+  <app-text-widget
     title="Абсолютные показатели"
-    type="text"
     period="January"
     [config]="aWidget"
-  ></app-widget>
-  <app-widget
+  ></app-text-widget>
+  <app-text-widget
     title="Тестовый виджет"
-    type="text"
     period="November"
     [config]="secondWidget"
-  ></app-widget>
-  <app-widget
+  ></app-text-widget>
+  <app-plot-widget
     title="Тестовый график"
-    type="plot"
     period="2017"
     [index]="1"
     [config]="plotConfig"
-  ></app-widget>
+  ></app-plot-widget>
   <button type="button" class="add-widget bg-success">
     <img src="../../../assets/img/add-plus-button.svg" alt="+" class="add-widget__icon">
   </button>

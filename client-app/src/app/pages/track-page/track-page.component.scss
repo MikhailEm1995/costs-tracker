@@ -1,7 +1,7 @@
 .wrapper {
   height: 100%;
   width: 100%;
-  padding: 5px;
+  padding: 10px;
 }
 
 .section {
@@ -37,4 +37,14 @@
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   z-index: 999;
+}
+
+.date-icon {
+  width: 1.2rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.btn-container {
+  padding: 0 10px;
 }

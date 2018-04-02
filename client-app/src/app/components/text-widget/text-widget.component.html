@@ -1,0 +1,21 @@
+<div [class]="'widget card mb-3 ' + border">
+  <div class="card-header d-flex flex-row">
+    <div class="w-50 text-left h6">{{ title }}</div>
+    <div class="w-50 text-right h6">{{ timePeriod }}</div>
+  </div>
+  <div class="card-body">
+
+    <div *ngIf="textWidget.getNumberOfCols() === 1" class="d-flex flex-column">
+      <div *ngFor="let row of textWidget.getTexts(handleTextOutput)[0]" [class]="'widget__row ' + firstColClassNames" [innerHTML]="row"></div>
+    </div>
+
+    <div *ngIf="textWidget.getNumberOfCols() === 2" class="d-flex flex-row">
+      <div class="column column--bordered w-50">
+        <div *ngFor="let row of textWidget.getTexts(handleTextOutput)[0]" [class]="'widget__row ' + firstColClassNames" [innerHTML]="row"></div>
+      </div>
+      <div class="column w-50">
+        <div *ngFor="let row of textWidget.getTexts(handleTextOutput)[1]" [class]="'widget__row ' + secondColClassNames" [innerHTML]="row"></div>
+      </div>
+    </div>
+  </div>
+</div>
