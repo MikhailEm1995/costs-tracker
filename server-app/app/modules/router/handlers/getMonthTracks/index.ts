@@ -26,9 +26,8 @@ export default (req: any, res: any): void => {
     }
 
     getMonthTracks(id)
-        .then((tracks) => {
-            console.log(tracks);
-            res.status(200).send(JSON.stringify(tracks));
+        .then((result) => {
+            res.status(200).send(JSON.stringify(result));
             tracks.killConnection();
         })
         .catch((err) => {

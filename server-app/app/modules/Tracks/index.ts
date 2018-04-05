@@ -60,7 +60,7 @@ export class Tracks {
         const now = moment();
         const monthStart = escape(now.startOf('month').format('YYYY-MM-DD'));
         const monthEnd = escape(now.endOf('month').format('YYYY-MM-DD'));
-        const query = `SELECT * FROM ${this.db}.${table} WHERE user_id=${escape(id)} AND \`date\` BETWEEN ${monthStart} AND ${monthEnd}`;
+        const query = `SELECT number, \`date\` FROM ${this.db}.${table} WHERE user_id=${escape(id)} AND \`date\` BETWEEN ${monthStart} AND ${monthEnd}`;
         
         return new Promise<any>((resolve, reject) => {
             this.connection.query(query, (err: Error, result: JSON) => {
@@ -74,7 +74,7 @@ export class Tracks {
         const now = moment();
         const yearStart = escape(now.startOf('year').format('YYYY-MM-DD'));
         const yearEnd = escape(now.endOf('year').format('YYYY-MM-DD'));
-        const query = `SELECT * FROM ${this.db}.${table} WHERE user_id=${escape(id)} AND \`date\` BETWEEN ${yearStart} AND ${yearEnd}`;
+        const query = `SELECT number, \`date\` FROM ${this.db}.${table} WHERE user_id=${escape(id)} AND \`date\` BETWEEN ${yearStart} AND ${yearEnd}`;
 
         return new Promise<any>((resolve, reject) => {
             this.connection.query(query, (err: Error, result: JSON) => {
