@@ -139,7 +139,7 @@ export class Tracks {
             const escapedColor = escape(color);
 
             const isCategoryExist: boolean = await this.isExistIn(
-                'income_categories',
+                'cost_categories',
                 `category=${escapedCat} AND user_id=${escapedUserID} AND color=${escapedColor}`
             );
 
