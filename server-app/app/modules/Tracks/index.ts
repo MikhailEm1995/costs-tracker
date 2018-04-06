@@ -96,16 +96,25 @@ export class Tracks {
         });
     }
 
-    public async putIncomeCategoryTrack(trackID: number, userID: number, category: string): Promise<any> {
+    public async putIncomeCategoryTrack(trackID: number, userID: number, category: string, color: string): Promise<any> {
         try {
-            const isCategoryExist: boolean = await this.isExistIn('income_categories', `category='${category}' AND user_id='${userID}'`);
+            const escapedUserID = escape(userID);
+            const escapedCat = escape(category);
+            const escapedColor = escape(color);
+
+            const isCategoryExist: boolean = await this.isExistIn(
+                'income_categories',
+                `category=${escapedCat} AND user_id=${escapedUserID} AND color=${escapedColor}`
+            );
 
             let categoryID: number;
 
             if (!isCategoryExist) {
-                categoryID = await this.putNewCategoryToTable('income_categories', userID, category);
+                categoryID = await this.putNewCategoryToTable('income_categories', userID, category, color);
             } else {
-                categoryID = await this.getRecordIdFrom('income_categories', `user_id='${userID}' AND category='${category}'`);
+                categoryID = await this.getRecordIdFrom(
+                    'income_categories',
+                    `user_id=${escapedUserID} AND category=${escapedCat} AND color=${escapedColor}`);
             }
 
             return new Promise((resolve, reject) => {
@@ -123,16 +132,25 @@ export class Tracks {
         }
     }
 
-    public async putCostCategoryTrack(trackID: number, userID: number, category: string): Promise<any> {
+    public async putCostCategoryTrack(trackID: number, userID: number, category: string, color: string): Promise<any> {
         try {
-            const isCategoryExist: boolean = await this.isExistIn('cost_categories', `category='${category}' AND user_id='${userID}'`);
+            const escapedUserID = escape(userID);
+            const escapedCat = escape(category);
+            const escapedColor = escape(color);
+
+            const isCategoryExist: boolean = await this.isExistIn(
+                'income_categories',
+                `category=${escapedCat} AND user_id=${escapedUserID} AND color=${escapedColor}`
+            );
 
             let categoryID: number;
 
             if (!isCategoryExist) {
-                categoryID = await this.putNewCategoryToTable('cost_categories', userID, category);
+                categoryID = await this.putNewCategoryToTable('cost_categories', userID, category, color);
             } else {
-                categoryID = await this.getRecordIdFrom('cost_categories', `user_id='${userID}' AND category='${category}'`);
+                categoryID = await this.getRecordIdFrom(
+                    'cost_categories',
+                    `user_id=${escapedUserID} AND category=${escapedCat} AND color=${escapedColor}`);
             }
 
             return new Promise((resolve, reject) => {
@@ -162,11 +180,11 @@ export class Tracks {
         });
     }
 
-    private putNewCategoryToTable(table: string, user_id: number, category: string): Promise<any> {
-        const query = `INSERT INTO ${this.db}.${table} (user_id, category) VALUES (?, ?)`;
+    private putNewCategoryToTable(table: string, user_id: number, category: string, color: string): Promise<any> {
+        const query = `INSERT INTO ${this.db}.${table} (user_id, category, color) VALUES (?, ?, ?)`;
 
         return new Promise<any>((resolve, reject) => {
-            this.connection.query(query, [user_id, category], (err: Error, result: any) => {
+            this.connection.query(query, [user_id, category, color], (err: Error, result: any) => {
                 if (err) reject(err);
                 resolve(result.insertId);
             })
