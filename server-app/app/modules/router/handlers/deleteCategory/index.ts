@@ -29,7 +29,7 @@ export function getTable(type: string): string {
 }
 
 export default (req: any, res: any): void => {
-    const { type, id } = req.body;
+    const { type, id } = req.query;
 
     deleteCategory(type, id)
         .then((result: any) => {
