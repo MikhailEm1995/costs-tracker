@@ -20,7 +20,7 @@ Response: {
 /api/track/income:
 /api/track/cost:
 
-BODY: { user_id: number, number: number, date: string = 'YYYY-MM-DD', category: string }
+BODY: { user_id: number, number: number, date: string = 'YYYY-MM-DD', category_id: number }
 Response: 'OK'
 
 /api/category:
