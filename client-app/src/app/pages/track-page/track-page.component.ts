@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {CategoryStruct, DateStruct, TrackDataStruct} from "../../../consts/classes/trackPageClasses";
+import {CategoriesResponse, UserCategoriesService} from "../../services/user-categories/user-categories.service";
+import {HttpResponse} from "@angular/common/http";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Component({
   selector: 'app-track-page',
@@ -10,71 +13,64 @@ export class TrackPageComponent implements OnInit {
 
   trackModel = new TrackDataStruct();
 
-  categories: CategoryStruct[];
-  newCategory: CategoryStruct = { name: '', color: '' };
+  allCategories: any;
+
+  currentCategories: any;
+  currentCategoriesType: boolean = false;
+
+  newCategory = { id: 0, category: '', color: '' };
   now: Date = new Date();
 
-  day: number;
-  month: number;
-  year: number;
-
-  constructor() { }
+  constructor(
+    private userCategories: UserCategoriesService
+  ) {
+    UserCategoriesService.categoriesPublisher.subscribe((categories: CategoriesResponse) => {
+          this.changeCurrentCategories(categories);
+    });
+  }
 
   ngOnInit() {
   //  TODO: get a list of user's categories
 
-    this.categories = [
-      { name: 'Meal', color: '#fff' },
-      { name: 'Transport', color: '#000' },
-      { name: 'Rest', color: '#ccc' },
-      { name: 'Test', color: '#f00' }
-    ];
+    this.userCategories.getUserCategories();
   }
 
-  chooseCategory({ target: { value } }): void {
-    this.trackModel.category = this.categories.find(cat => cat.name === value);
+  private changeCategoriesType(): void {
+    this.currentCategoriesType = !this.currentCategoriesType;
   }
 
-  addNewCategoryName(e): void {
-    this.newCategory.name = e.target.value;
+  private changeCurrentCategories(categories): void {
+    if (this.currentCategoriesType) this.currentCategories = categories.income_categories;
+    if (!this.currentCategoriesType) this.currentCategories = categories.cost_categories;
   }
 
-  addNewCategoryColor(e): void {
-    this.newCategory.color = e.target.value;
+  public handleCategoryTypeClick(): void {
+    this.changeCategoriesType();
+    this.changeCurrentCategories(UserCategoriesService.categories);
   }
 
-  pushNewCategory(): void {
-    const isCategoryExist = this.categories.some(({ name, color }) => {
-      return name === this.newCategory.name && color === this.newCategory.color;
+  public handleCategoryClick({ target: { value } }): void {
+    this.trackModel.category = this.currentCategories.find(({ id }) => id === value);
+  }
+
+  public handleDeleteCategoryClick(categoryID): void {
+    // TODO send delete request
+
+    this.currentCategories = this.currentCategories.filter(({ id }) => id !== categoryID);
+  }
+
+  public handleAddNewCategoryClick(): void {
+    const isCategoryExist = this.currentCategories.some(({ category, color }) => {
+      return category === this.newCategory.category && color === this.newCategory.color;
     });
 
-    if (!isCategoryExist) this.categories.push(this.newCategory);
+    // TODO here must be notification to user
 
-    console.log(this.categories);
+    if (!isCategoryExist) this.currentCategories.push(this.newCategory);
+    // TODO here must be PUT/ request and preloader
   }
 
-  unshiftCategory(catName): void {
-    this.categories = this.categories.filter(({ name }) => {
-      return name !== catName;
-    });
-  }
-
-  setDay(e): void {
-    this.day = e.target.value;
-    this.trackModel.date.day = e.target.value;
-  }
-
-  setMonth(e): void {
-    this.month = e.target.value;
-    this.trackModel.date.month = e.target.value;
-  }
-
-  setYear(e): void {
-    this.year = e.target.value;
-    this.trackModel.date.year = e.target.value;
-  }
-
-  setToday(): void {
+  public handleSetTodayClick(): void {
     if (!this.trackModel.date) this.trackModel.date = new DateStruct();
 
     const { date } = this.trackModel;
@@ -82,17 +78,13 @@ export class TrackPageComponent implements OnInit {
     date.day = this.now.getDate();
     date.month = this.now.getMonth() + 1;
     date.year = this.now.getFullYear();
-
-    this.day = date.day;
-    this.month = date.month;
-    this.year = date.year;
   }
 
   sendIncome(): void {
 
   }
 
-  sendOutcome(): void {
-    
+  sendCost(): void {
+
   }
 }

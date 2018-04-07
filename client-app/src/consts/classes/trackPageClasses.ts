@@ -5,13 +5,13 @@ export class DateStruct {
 }
 
 export class CategoryStruct {
-  name: string;
-  color: string;
+  income_categories: string[];
+  cost_categories: string[];
 }
 
 export class TrackDataStruct {
   type: string;
   number: number;
-  category: CategoryStruct;
-  date: DateStruct;
+  category: string;
+  date: DateStruct = new DateStruct();
 }

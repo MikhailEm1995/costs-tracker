@@ -6,21 +6,27 @@
         <div class="input-group-prepend">
           <div class="input-group-text">$</div>
         </div>
-        <input type="number" class="form-control text-right" id="number" placeholder="0">
+        <input [(ngModel)]="trackModel.number" min="0" type="number" class="form-control text-right" id="number" placeholder="0">
       </div>
     </div>
   </div>
 
   <div class="card section">
-    <div class="card-header h6">Category</div>
+    <div class="card-header d-flex flex-row">
+      <div class="w-50 text-left h6 d-flex align-items-center">Category</div>
+      <div class="w-50 text-right">
+        <button *ngIf="currentCategoriesType" type="button" class="btn btn-outline-success" (click)="handleCategoryTypeClick()">income</button>
+        <button *ngIf="!currentCategoriesType" type="button" class="btn btn-outline-danger" (click)="handleCategoryTypeClick()">cost</button>
+      </div>
+    </div>
     <div class="card-body">
       <div class="categories">
         <div class="btn-group btn-group-toggle btn-group-vertical w-100" data-toggle="buttons">
-          <div *ngFor="let category of categories" class="btn-group w-100">
+          <div *ngFor="let category of currentCategories" class="btn-group w-100">
             <label class="btn btn-outline-info btn-block">
-              <input [value]="category.name" type="radio" name="categories" autocomplete="off" (change)="chooseCategory($event)">{{ category.name | capitalize }}
+              <input [value]="category.id" type="radio" name="categories" autocomplete="off" (change)="handleCategoryClick($event)">{{ category.category | capitalize }}
             </label>
-            <button type="button" class="btn btn-danger delete" (click)="unshiftCategory(category.name)()"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="btn btn-danger delete" (click)="handleDeleteCategoryClick(category.id)"><span aria-hidden="true">&times;</span></button>
           </div>
         </div>
       </div>
@@ -28,9 +34,9 @@
       <div class="new-category-form">
         <label for="add-category">Add new category</label>
         <div class="input-group">
-          <input id="add-category" class="form-control" placeholder="Category name" (change)="addNewCategoryName($event)">
-          <input type="color" class="form-control new-category-form__colorpicker" title="color" (change)="addNewCategoryColor($event)">
-          <button type="button" (click)="pushNewCategory()" class="btn btn-success new-category-form__add-button">+</button>
+          <input [(ngModel)]="newCategory.category" id="add-category" class="form-control" placeholder="Category name">
+          <input [(ngModel)]="newCategory.color" type="color" class="form-control new-category-form__colorpicker" title="color">
+          <button type="button" (click)="handleAddNewCategoryClick()" class="btn btn-success new-category-form__add-button">+</button>
         </div>
       </div>
     </div>
@@ -40,12 +46,12 @@
     <div class="card-header h6">Date</div>
     <div class="card-body">
       <div class="input-group">
-        <input (change)="setDay($event)" type="number" min="1"  class="form-control" placeholder="dd" title="Day" [value]="day || ''">
-        <input (change)="setMonth($event)" type="number" min="1" max="12" class="form-control" placeholder="mm" title="Month" [value]="month || ''">
-        <input (change)="setYear($event)" type="number" min="1900" [max]="now.getFullYear()" class="form-control" placeholder="yyyy" title="Year" [value]="year || ''">
+        <input [(ngModel)]="trackModel.date.day" type="number" min="1"  class="form-control" placeholder="dd" title="Day" [value]="trackModel.date.day || ''">
+        <input [(ngModel)]="trackModel.date.month" type="number" min="1" max="12" class="form-control" placeholder="mm" title="Month" [value]="trackModel.date.month || ''">
+        <input [(ngModel)]="trackModel.date.year" type="number" min="1900" [max]="now.getFullYear()" class="form-control" placeholder="yyyy" title="Year" [value]="trackModel.date.year || ''">
       </div>
       <div class="d-flex justify-content-end mt-3">
-        <button type="button" class="btn btn-outline-info" (click)="setToday()">Set today</button>
+        <button type="button" class="btn btn-outline-info" (click)="handleSetTodayClick()">Set today</button>
       </div>
     </div>
   </div>

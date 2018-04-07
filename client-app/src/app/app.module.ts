@@ -14,6 +14,8 @@ import { PlotWidgetComponent } from './components/plot-widget/plot-widget.compon
 import { TextWidgetComponent } from './components/text-widget/text-widget.component';
 import { CapitalizePipe } from './pipes/capitalize/capitalize.pipe';
 import {AppRoutingModule} from "./modules/app-routing/app-routing.module";
+import {HttpClientModule} from "@angular/common/http";
+import {UserCategoriesService} from "./services/user-categories/user-categories.service";
 
 @NgModule({
   declarations: [
@@ -32,9 +34,12 @@ import {AppRoutingModule} from "./modules/app-routing/app-routing.module";
     AppRoutingModule,
     BrowserModule,
     NgbModule.forRoot(),
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    UserCategoriesService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
