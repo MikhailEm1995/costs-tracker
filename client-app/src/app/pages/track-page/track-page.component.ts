@@ -52,20 +52,14 @@ export class TrackPageComponent implements OnInit {
   }
 
   public handleDeleteCategoryClick(categoryID): void {
-    // TODO send delete request
-
-    this.currentCategories = this.currentCategories.filter(({ id }) => id !== categoryID);
+    this.userCategories.deleteCategory(categoryID, this.currentCategoriesType? 'income' : 'cost');
   }
 
   public handleAddNewCategoryClick(): void {
-    const isCategoryExist = this.currentCategories.some(({ category, color }) => {
-      return category === this.newCategory.category && color === this.newCategory.color;
-    });
-
-    // TODO here must be notification to user
-
-    if (!isCategoryExist) this.currentCategories.push(this.newCategory);
-    // TODO here must be PUT/ request and preloader
+    this.userCategories.putNewCategory(
+      this.currentCategoriesType? 'income' : 'cost',
+      this.newCategory.category,
+      this.newCategory.color);
   }
 
   public handleSetTodayClick(): void {

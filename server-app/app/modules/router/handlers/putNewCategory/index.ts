@@ -34,7 +34,7 @@ export default (req: any, res: any): void => {
     putNewCategory(user_id, type, category, color)
         .then((id: number) => {
             res.status(200).send(JSON.stringify({
-                id, category, color
+                id, category, color, type
             }));
             categories.killConnection();
         })

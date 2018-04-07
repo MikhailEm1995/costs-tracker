@@ -29,7 +29,6 @@ BODY: { user_id: number, type: string = 'income'|'cost', category: string, color
 Response: { id: number, category: string, color: string }
 
 3. DELETE/
-/api/category:
+/api/category?id=${category_id}&type=${category_type}:
 
-BODY: { id: number, type: string = 'income'|'cost' }
 Response: { id: number, type: string = 'income'|'cost' }
