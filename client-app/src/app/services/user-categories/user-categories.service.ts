@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {Observable} from "rxjs/Observable";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";``
+import {Subject} from "rxjs/Subject";
 
 class Category {
   id: number;
@@ -18,7 +17,7 @@ export class CategoriesResponse {
 @Injectable()
 export class UserCategoriesService {
   static categories: any;
-  static categoriesPublisher: BehaviorSubject<CategoriesResponse> = new BehaviorSubject({});
+  static categoriesPublisher: Subject<CategoriesResponse> = new Subject();
   static userID: number = 1;
 
   constructor(
@@ -32,7 +31,7 @@ export class UserCategoriesService {
   public getUserCategories(): void {
     this.http.get<CategoriesResponse>(`http://localhost:8080/api/categories?id=${UserCategoriesService.userID}`)
       .subscribe(
-        (res: any) => {
+        (res: CategoriesResponse) => {
           UserCategoriesService.categoriesPublisher.next(res);
         },
         (err: HttpErrorResponse) => {

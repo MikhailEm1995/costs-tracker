@@ -1,0 +1,14 @@
+.notifications {
+  width: 100vw;
+  max-height: 195px;
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  &__item {
+    margin-top: 15px;
+  }
+}

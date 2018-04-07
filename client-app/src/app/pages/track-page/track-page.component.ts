@@ -3,6 +3,7 @@ import {CategoryStruct, DateStruct, TrackDataStruct} from "../../../consts/class
 import {CategoriesResponse, UserCategoriesService} from "../../services/user-categories/user-categories.service";
 import {HttpResponse} from "@angular/common/http";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {NotificationsService} from "../../services/notifications/notifications.service";
 
 @Component({
   selector: 'app-track-page',
@@ -20,7 +21,8 @@ export class TrackPageComponent implements OnInit {
   now: Date = new Date();
 
   constructor(
-    private userCategories: UserCategoriesService
+    private userCategories: UserCategoriesService,
+    private notifications: NotificationsService
   ) {
     UserCategoriesService.categoriesPublisher.subscribe((categories: CategoriesResponse) => {
           this.changeCurrentCategories(categories);

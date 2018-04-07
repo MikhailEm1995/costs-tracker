@@ -16,6 +16,8 @@ import { CapitalizePipe } from './pipes/capitalize/capitalize.pipe';
 import {AppRoutingModule} from "./modules/app-routing/app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
 import {UserCategoriesService} from "./services/user-categories/user-categories.service";
+import { LayoutComponent } from './components/layout/layout.component';
+import {NotificationsService} from "./services/notifications/notifications.service";
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import {UserCategoriesService} from "./services/user-categories/user-categories.
     NewWidgetPageComponent,
     PlotWidgetComponent,
     TextWidgetComponent,
-    CapitalizePipe
+    CapitalizePipe,
+    LayoutComponent
   ],
   imports: [
     AppRoutingModule,
@@ -38,7 +41,8 @@ import {UserCategoriesService} from "./services/user-categories/user-categories.
     HttpClientModule
   ],
   providers: [
-    UserCategoriesService
+    UserCategoriesService,
+    NotificationsService
   ],
   bootstrap: [AppComponent]
 })

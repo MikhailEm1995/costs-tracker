@@ -1,0 +1,9 @@
+<ng-content></ng-content>
+
+<div class="notifications">
+  <div *ngFor="let alert of alerts" class="notifications__item">
+    <ngb-alert [type]="alert.type" (close)="deleteAlert(alert)">
+      <strong>{{alert.label || ''}}</strong> {{ alert.message }}
+    </ngb-alert>
+  </div>
+</div>
