@@ -33,7 +33,6 @@ export class UserCategoriesService {
     this.http.get<CategoriesResponse>(`http://localhost:8080/api/categories?id=${UserCategoriesService.userID}`)
       .subscribe(
         (res: any) => {
-          console.log(res);
           UserCategoriesService.categoriesPublisher.next(res);
         },
         (err: HttpErrorResponse) => {

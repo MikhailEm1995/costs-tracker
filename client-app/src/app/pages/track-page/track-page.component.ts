@@ -13,8 +13,6 @@ export class TrackPageComponent implements OnInit {
 
   trackModel = new TrackDataStruct();
 
-  allCategories: any;
-
   currentCategories: any;
   currentCategoriesType: boolean = false;
 
@@ -30,8 +28,6 @@ export class TrackPageComponent implements OnInit {
   }
 
   ngOnInit() {
-  //  TODO: get a list of user's categories
-
     this.userCategories.getUserCategories();
   }
 

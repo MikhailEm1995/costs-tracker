@@ -7,7 +7,6 @@ export default (req: any, res: any): void => {
 
     tracks.getUserCategories(req.query.id)
         .then((result) => {
-            console.log(result);
             res.status(200).send(JSON.stringify(result));
             tracks.killConnection();
         })

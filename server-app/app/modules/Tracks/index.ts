@@ -36,8 +36,8 @@ export class Tracks {
 
             return {
                 user_id: userID,
-                income_categories: income_categories.map((elem: any) => elem.category),
-                cost_categories: cost_categories.map((elem: any) => elem.category)
+                income_categories: income_categories,
+                cost_categories: cost_categories
             };
         } catch (err) {
             console.error(err);
@@ -46,7 +46,7 @@ export class Tracks {
     }
 
     private getCategoriesFrom(table: string, userID: number): Promise<any> {
-        const query = `SELECT category FROM ${this.db}.${table} WHERE user_id=${escape(userID)}`;
+        const query = `SELECT id, category, color FROM ${this.db}.${table} WHERE user_id=${escape(userID)}`;
 
         return new Promise((resolve, reject) => {
             this.connection.query(query, (err: Error, result: any) => {
