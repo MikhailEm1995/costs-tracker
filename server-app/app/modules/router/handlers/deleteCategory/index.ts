@@ -4,36 +4,22 @@ const categories = new Categories();
 
 let isServerError = true;
 
-async function deleteCategory(type: string, id: number): Promise<any> {
+async function deleteCategory(id: number): Promise<any> {
     try {
         categories.connect();
-
-        const table = getTable(type);
-
-        return await categories.deleteCategoryFromTable(table, id);
+        return await categories.deleteCategory(id);
     } catch(err) {
         console.error(err);
         Promise.reject(err);
     }
 }
 
-export function getTable(type: string): string {
-    switch (type) {
-        case 'income': return 'income_categories';
-        case 'cost': return 'cost_categories';
-        default: {
-            isServerError = false;
-            throw new Error();
-        }
-    }
-}
-
 export default (req: any, res: any): void => {
-    const { type, id } = req.query;
+    const { id } = req.query;
 
-    deleteCategory(type, id)
-        .then((result: any) => {
-            res.status(200).send(JSON.stringify({ type, id }));
+    deleteCategory(id)
+        .then(() => {
+            res.status(200).send(JSON.stringify({ id }));
             categories.killConnection();
         })
         .catch((err: any) => {

@@ -4,27 +4,13 @@ const categories = new Categories();
 
 let isServerError = true;
 
-async function putNewCategory(user_id: number, type: string, category: string, color: string): Promise<any> {
+async function putNewCategory(user_id: number, type: number, category: string, color: string): Promise<any> {
     try {
         categories.connect();
-
-        const table = getTable(type);
-
-        return await categories.putNewCategoryToTable(table, user_id, category, color);
+        return await categories.putNewCategory(user_id, category, color, type);
     } catch(err) {
         console.error(err);
         return Promise.reject(err);
-    }
-}
-
-export function getTable(type: string): string {
-    switch (type) {
-        case 'income': return 'income_categories';
-        case 'cost': return 'cost_categories';
-        default: {
-            isServerError = false;
-            throw new Error();
-        }
     }
 }
 

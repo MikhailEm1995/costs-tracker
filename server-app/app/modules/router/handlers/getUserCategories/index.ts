@@ -1,14 +1,14 @@
-import {Tracks} from "../../../Tracks/index";
+import {Categories} from "../../../Categories/index";
 
-let tracks = new Tracks();
+let categories = new Categories();
 
 export default (req: any, res: any): void => {
-    tracks.connect();
+    categories.connect();
 
-    tracks.getUserCategories(req.query.id)
+    categories.getUserCategories(req.query.id)
         .then((result) => {
             res.status(200).send(JSON.stringify(result));
-            tracks.killConnection();
+            categories.killConnection();
         })
         .catch((err) => {
             console.error(err);

@@ -2,14 +2,14 @@ import { Tracks } from "../../../Tracks/index";
 
 let tracks = new Tracks();
 
-async function getMonthTracks(user_id: string): Promise<any> {
+async function getMonthTracks(user_id: number): Promise<any> {
     try {
         tracks.connect();
 
         return {
             user_id,
-            costs: await tracks.getMonthFromTable(user_id, 'cost_tracks'),
-            income: await tracks.getMonthFromTable(user_id, 'income_tracks')
+            costs: await tracks.getMonth(user_id),
+            income: await tracks.getMonth(user_id)
         };
     } catch(err) {
         console.error(err);
