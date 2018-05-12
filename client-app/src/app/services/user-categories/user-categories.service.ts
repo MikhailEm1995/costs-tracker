@@ -11,7 +11,7 @@ class Category {
 }
 
 class TypedCategory extends Category {
-  type: string;
+  type: number;
 }
 
 export class CategoriesResponse {
@@ -22,7 +22,7 @@ export class CategoriesResponse {
 
 class DeletedCategory {
   id: number;
-  type: string;
+  type: number;
 }
 
 @Injectable()
@@ -42,7 +42,7 @@ export class UserCategoriesService {
 
   public getUserCategories(): void {
     this.http.get<CategoriesResponse>(
-      `http://localhost:8080/api/categories?id=${UserCategoriesService.userID}`
+      `/api/categories?id=${UserCategoriesService.userID}`
       )
       .subscribe(
         (res: CategoriesResponse) => {
@@ -55,18 +55,18 @@ export class UserCategoriesService {
       );
   }
 
-  public putNewCategory(type: string, category: string, color: string): void {
+  public putNewCategory(type: number, category: string, color: string): void {
     this.http.put<Category>(
-      'http://localhost:8080/api/category',
+      '/api/category',
       { user_id: UserCategoriesService.userID, type, category, color }
     )
       .subscribe(
         (res: TypedCategory) => {
           const { type, id, category, color } = res;
-          if (type === 'income') {
-            this.addIncomeCategory(id, category, color);
-          } else if (type === 'cost') {
-            this.addCostCategory(id, category, color);
+          if (type === 1) {
+            this.addIncomeCategory(id, category, color, type);
+          } else if (type === 2) {
+            this.addCostCategory(id, category, color, type);
           }
           this.notifications.show('success', 'Success:', 'New category created!');
         },
@@ -77,13 +77,18 @@ export class UserCategoriesService {
       );
   }
 
-  public deleteCategory(id: number, type: string): void {
-    this.http.delete<DeletedCategory>(`http://localhost:8080/api/category?id=${id}&type=${type}`)
+  public deleteCategory(id: number, type: number): void {
+    this.http.delete<DeletedCategory>(
+      `/api/category?id=${id}`,
+      {
+        withCredentials: false
+      }
+      )
       .subscribe(
         (res: DeletedCategory) => {
-          if (res.type === 'income') {
+          if (type === 2) {
             this.deleteIncomeCategory(res.id);
-          } else if (res.type === 'cost') {
+          } else if (type === 1) {
             this.deleteCostCategory(res.id);
           }
           this.notifications.show('success', 'Success:', 'Category deleted!');
@@ -97,25 +102,25 @@ export class UserCategoriesService {
 
   private deleteIncomeCategory(deletedID: number): void {
     const { categories, categoriesPublisher } = UserCategoriesService;
-    categories.income_categories = categories.income_categories.filter(({ id }) => deletedID !== id);
-    categoriesPublisher.next(categories);
+    categories.income_categories = categories.income_categories.filter(({ id }) => +deletedID !== +id);
+    categoriesPublisher.next(Object.assign({}, categories));
   }
 
   private deleteCostCategory(deletedID: number): void {
     const { categories, categoriesPublisher } = UserCategoriesService;
-    categories.cost_categories = categories.cost_categories.filter(({ id }) => deletedID !== id);
-    categoriesPublisher.next(categories);
+    categories.cost_categories = categories.cost_categories.filter(({ id }) => +deletedID !== +id);
+    categoriesPublisher.next(Object.assign({}, categories));
   }
 
-  private addIncomeCategory(id: number, category: string, color: string): void {
+  private addIncomeCategory(id: number, category: string, color: string, type: number): void {
     const { categories, categoriesPublisher } = UserCategoriesService;
-    categories.income_categories = categories.income_categories.concat({ id, category, color });
-    categoriesPublisher.next(categories);
+    categories.income_categories = categories.income_categories.concat({ id, category, color, type });
+    categoriesPublisher.next(Object.assign({}, categories));
   }
 
-  private addCostCategory(id: number, category: string, color: string): void {
+  private addCostCategory(id: number, category: string, color: string, type: number): void {
     const { categories, categoriesPublisher } = UserCategoriesService;
-    categories.income_cost = categories.cost_categories.concat({ id, category, color });
-    categoriesPublisher.next(categories);
+    categories.cost_categories = categories.cost_categories.concat({ id, category, color, type });
+    categoriesPublisher.next(Object.assign({}, categories));
   }
 }

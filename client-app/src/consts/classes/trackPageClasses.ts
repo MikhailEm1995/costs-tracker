@@ -12,6 +12,6 @@ export class CategoryStruct {
 export class TrackDataStruct {
   type: string;
   number: number;
-  category: string;
+  category_id: number;
   date: DateStruct = new DateStruct();
 }

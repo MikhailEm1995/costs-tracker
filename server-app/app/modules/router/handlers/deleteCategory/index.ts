@@ -2,8 +2,6 @@ import { Categories } from "../../../Categories/index";
 
 const categories = new Categories();
 
-let isServerError = true;
-
 async function deleteCategory(id: number): Promise<any> {
     try {
         categories.connect();
@@ -25,12 +23,7 @@ export default (req: any, res: any): void => {
         .catch((err: any) => {
             console.error(err);
 
-            if (isServerError) {
-                res.status(500).send('Internal server error');
-            } else {
-                res.status(400).send('Invalid type');
-            }
-
+            res.status(500).send('Internal server error');
             categories.killConnection();
         });
 };

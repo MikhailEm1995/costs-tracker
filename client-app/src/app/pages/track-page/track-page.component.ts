@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {CategoryStruct, DateStruct, TrackDataStruct} from "../../../consts/classes/trackPageClasses";
+import {DateStruct, TrackDataStruct} from "../../../consts/classes/trackPageClasses";
 import {CategoriesResponse, UserCategoriesService} from "../../services/user-categories/user-categories.service";
-import {HttpResponse} from "@angular/common/http";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {NotificationsService} from "../../services/notifications/notifications.service";
+import {TracksService} from "../../services/tracks/tracks.service";
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-track-page',
@@ -22,6 +23,7 @@ export class TrackPageComponent implements OnInit {
 
   constructor(
     private userCategories: UserCategoriesService,
+    private tracks: TracksService,
     private notifications: NotificationsService
   ) {
     UserCategoriesService.categoriesPublisher.subscribe((categories: CategoriesResponse) => {
@@ -48,7 +50,7 @@ export class TrackPageComponent implements OnInit {
   }
 
   public handleCategoryClick({ target: { value } }): void {
-    this.trackModel.category = this.currentCategories.find(({ id }) => id === value);
+    this.trackModel.category_id = this.currentCategories.find(({ id }) => id === +value).id;
   }
 
   public handleDeleteCategoryClick(categoryID): void {
@@ -72,11 +74,17 @@ export class TrackPageComponent implements OnInit {
     date.year = this.now.getFullYear();
   }
 
-  sendIncome(): void {
+  public handleIncomeButtonClick(): void {
+    const { number, category_id, date: { day, month, year } } = this.trackModel;
+    const formattedDate = moment().set('year', year).set('month', month).set('date', day).format('YYYY-MM-DD');
 
+    this.tracks.putIncomeTrack(number, formattedDate, category_id);
   }
 
-  sendCost(): void {
+  public handleCostButtonClick(): void {
+    const { number, category_id, date: { day, month, year } } = this.trackModel;
+    const formattedDate = moment().set('year', year).set('month', month).set('date', day).format('YYYY-MM-DD');
 
+    this.tracks.putCostTrack(number, formattedDate, category_id);
   }
 }

@@ -18,6 +18,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {UserCategoriesService} from "./services/user-categories/user-categories.service";
 import { LayoutComponent } from './components/layout/layout.component';
 import {NotificationsService} from "./services/notifications/notifications.service";
+import {TracksService} from "./services/tracks/tracks.service";
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {NotificationsService} from "./services/notifications/notifications.servi
   ],
   providers: [
     UserCategoriesService,
-    NotificationsService
+    NotificationsService,
+    TracksService
   ],
   bootstrap: [AppComponent]
 })
