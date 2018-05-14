@@ -8,8 +8,8 @@ async function getMonthTracks(user_id: number): Promise<any> {
 
         return {
             user_id,
-            costs: await tracks.getYear(user_id),
-            income: await tracks.getYear(user_id)
+            costs: await tracks.getMonth(user_id),
+            income: await tracks.getMonth(user_id)
         };
     } catch(err) {
         console.error(err);

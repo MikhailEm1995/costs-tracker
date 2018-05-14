@@ -1,16 +1,54 @@
 import { Injectable } from '@angular/core';
 import {NotificationsService} from "../notifications/notifications.service";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {Subject} from "rxjs/Subject";
+
+class Track {
+  number: number;
+  date: string;
+  type: number;
+  category_id: number;
+}
 
 @Injectable()
 export class TracksService {
   static userID: number = 1;
-
+  static tracks: Subject<Track[]> = new Subject();
 
   constructor(
     private http: HttpClient,
     private notifications: NotificationsService
-  ) { }
+  ) {}
+
+  public getMonthTracks(): void {
+    this.http.get<Track[]>(
+      `/api/tracks/month?id=${TracksService.userID}`
+    )
+      .subscribe(
+        (res: Track[]) => {
+          TracksService.tracks.next(res);
+        },
+        (err: HttpErrorResponse) => {
+          console.error(err);
+          this.notifications.show('danger', 'Error:', 'Couldn\'t get tracks');
+        }
+      );
+  }
+
+  public getYearTracks(): void {
+    this.http.get<Track[]>(
+      `/api/tracks/year?id=${TracksService.userID}`
+    )
+      .subscribe(
+        (res: Track[]) => {
+          TracksService.tracks.next(res);
+        },
+        (err: HttpErrorResponse) => {
+          console.error(err);
+          this.notifications.show('danger', 'Error:', 'Couldn\'t get tracks');
+        }
+      );
+  }
 
   public putIncomeTrack(number: number, date: string, category_id: number): void {
     this.http.put(
