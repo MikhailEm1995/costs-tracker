@@ -18,7 +18,7 @@ export class TrackPageComponent implements OnInit {
   currentCategories: any;
   currentCategoriesType: boolean = false;
 
-  newCategory = { id: 0, category: '', color: '' };
+  newCategory = { id: 0, name: '', color: '#000000' };
   now: Date = new Date();
 
   constructor(
@@ -40,8 +40,9 @@ export class TrackPageComponent implements OnInit {
   }
 
   private changeCurrentCategories(categories): void {
-    if (this.currentCategoriesType) this.currentCategories = categories.income_categories;
-    if (!this.currentCategoriesType) this.currentCategories = categories.cost_categories;
+    debugger;
+    if (categories && this.currentCategoriesType) this.currentCategories = categories.income_categories;
+    if (categories && !this.currentCategoriesType) this.currentCategories = categories.cost_categories;
   }
 
   public handleCategoryTypeClick(): void {
@@ -54,13 +55,13 @@ export class TrackPageComponent implements OnInit {
   }
 
   public handleDeleteCategoryClick(categoryID): void {
-    this.userCategories.deleteCategory(categoryID, this.currentCategoriesType? 'income' : 'cost');
+    this.userCategories.deleteCategory(categoryID, this.currentCategoriesType? 2 : 1);
   }
 
   public handleAddNewCategoryClick(): void {
     this.userCategories.putNewCategory(
-      this.currentCategoriesType? 'income' : 'cost',
-      this.newCategory.category,
+      this.currentCategoriesType? 2 : 1,
+      this.newCategory.name,
       this.newCategory.color);
   }
 

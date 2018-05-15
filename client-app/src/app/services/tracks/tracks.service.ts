@@ -3,7 +3,10 @@ import {NotificationsService} from "../notifications/notifications.service";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 
+import {host} from "../../../consts/api";
+
 class Track {
+  id: number;
   number: number;
   date: string;
   type: number;
@@ -22,7 +25,7 @@ export class TracksService {
 
   public getMonthTracks(): void {
     this.http.get<Track[]>(
-      `/api/tracks/month?id=${TracksService.userID}`
+      `${host}/api/tracks/month?id=${TracksService.userID}`
     )
       .subscribe(
         (res: Track[]) => {
@@ -37,7 +40,7 @@ export class TracksService {
 
   public getYearTracks(): void {
     this.http.get<Track[]>(
-      `/api/tracks/year?id=${TracksService.userID}`
+      `${host}/api/tracks/year?id=${TracksService.userID}`
     )
       .subscribe(
         (res: Track[]) => {
@@ -52,7 +55,7 @@ export class TracksService {
 
   public putIncomeTrack(number: number, date: string, category_id: number): void {
     this.http.put(
-      '/api/track/income',
+      `${host}/api/track/income`,
       { user_id: TracksService.userID, number, date, category_id }
     )
       .subscribe(
@@ -68,7 +71,7 @@ export class TracksService {
 
   public putCostTrack(number: number, date: string, category_id: number): void {
     this.http.put(
-      '/api/track/cost',
+      `${host}/api/track/cost`,
       { user_id: TracksService.userID, number, date, category_id }
     )
       .subscribe(

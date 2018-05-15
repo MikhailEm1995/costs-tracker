@@ -2,10 +2,12 @@ import { Categories } from '../../../Categories/index'
 
 const categories = new Categories();
 
-async function putNewCategory(user_id: number, type: number, category: string, color: string): Promise<any> {
+async function putNewCategory(user_id: number, type: number, name: string, color: string): Promise<any> {
     try {
+        if (!color || !name) throw new Error();
+
         categories.connect();
-        return await categories.putNewCategory(user_id, category, color, type);
+        return await categories.putNewCategory(user_id, name, color, type);
     } catch(err) {
         console.error(err);
         return Promise.reject(err);
@@ -13,12 +15,12 @@ async function putNewCategory(user_id: number, type: number, category: string, c
 }
 
 export default (req: any, res: any): void => {
-    const { user_id, type, category, color } = req.body;
+    const { user_id, type, name, color } = req.body;
 
-    putNewCategory(user_id, type, category, color)
+    putNewCategory(user_id, type, name, color)
         .then((id: number) => {
             res.status(200).send(JSON.stringify({
-                id, category, color, type
+                id, name, color, type
             }));
             categories.killConnection();
         })

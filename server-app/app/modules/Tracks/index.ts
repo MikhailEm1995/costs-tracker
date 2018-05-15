@@ -32,7 +32,7 @@ export class Tracks {
         const now = moment();
         const monthStart = now.startOf('month').format('YYYY-MM-DD');
         const monthEnd = now.endOf('month').format('YYYY-MM-DD');
-        const query = `SELECT number, \`date\`, type, category_id FROM ${this.db}.tracks WHERE user_id=? AND \`date\` BETWEEN ? AND ?`;
+        const query = `SELECT id, number, \`date\`, type, category_id FROM ${this.db}.tracks WHERE user_id=? AND \`date\` BETWEEN ? AND ?`;
         
         return new Promise<any>((resolve, reject) => {
             this.connection.query(query, [user_id, monthStart, monthEnd], (err: Error, result: JSON) => {
@@ -46,7 +46,7 @@ export class Tracks {
         const now = moment();
         const yearStart = now.startOf('year').format('YYYY-MM-DD');
         const yearEnd = now.endOf('year').format('YYYY-MM-DD');
-        const query = `SELECT number, \`date\`, type, category_id FROM ${this.db}.tracks WHERE user_id=? AND \`date\` BETWEEN ? AND ?`;
+        const query = `SELECT id, number, \`date\`, type, category_id FROM ${this.db}.tracks WHERE user_id=? AND \`date\` BETWEEN ? AND ?`;
 
         return new Promise<any>((resolve, reject) => {
             this.connection.query(query, [user_id, yearStart, yearEnd], (err: Error, result: JSON) => {

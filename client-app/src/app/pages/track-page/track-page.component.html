@@ -24,7 +24,7 @@
         <div class="btn-group btn-group-toggle btn-group-vertical w-100" data-toggle="buttons">
           <div *ngFor="let category of currentCategories" class="btn-group w-100">
             <label class="btn btn-outline-info btn-block">
-              <input [value]="category.id" type="radio" name="categories" autocomplete="off" (change)="handleCategoryClick($event)">{{ category.category | capitalize }}
+              <input [value]="category.id" type="radio" name="categories" autocomplete="off" (change)="handleCategoryClick($event)">{{ category.name | capitalize }}
             </label>
             <button type="button" class="btn btn-danger delete" (click)="handleDeleteCategoryClick(category.id)"><span aria-hidden="true">&times;</span></button>
           </div>
@@ -34,7 +34,7 @@
       <div class="new-category-form">
         <label for="add-category">Add new category</label>
         <div class="input-group">
-          <input [(ngModel)]="newCategory.category" id="add-category" class="form-control" placeholder="Category name">
+          <input [(ngModel)]="newCategory.name" id="add-category" class="form-control" placeholder="Category name">
           <input [(ngModel)]="newCategory.color" type="color" class="form-control new-category-form__colorpicker" title="color">
           <button type="button" (click)="handleAddNewCategoryClick()" class="btn btn-success new-category-form__add-button">+</button>
         </div>

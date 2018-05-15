@@ -37,7 +37,7 @@ export class Categories {
     }
 
     private getIncomeCategories(userID: number): Promise<any> {
-        const query = `SELECT id, category, color FROM ${this.db}.categories WHERE user_id=? AND type=2`;
+        const query = `SELECT id, name, color FROM ${this.db}.categories WHERE user_id=? AND type=2`;
 
         return new Promise((resolve, reject) => {
             this.connection.query(query, [userID], (err: Error, result: any) => {
@@ -48,7 +48,7 @@ export class Categories {
     }
 
     private getCostCategories(userID: number): Promise<any> {
-        const query = `SELECT id, category, color FROM ${this.db}.categories WHERE user_id=? AND type=1`;
+        const query = `SELECT id, name, color FROM ${this.db}.categories WHERE user_id=? AND type=1`;
 
         return new Promise((resolve, reject) => {
             this.connection.query(query, [userID], (err: Error, result: any) => {
