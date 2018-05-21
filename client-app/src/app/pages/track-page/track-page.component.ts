@@ -40,7 +40,6 @@ export class TrackPageComponent implements OnInit {
   }
 
   private changeCurrentCategories(categories): void {
-    debugger;
     if (categories && this.currentCategoriesType) this.currentCategories = categories.income_categories;
     if (categories && !this.currentCategoriesType) this.currentCategories = categories.cost_categories;
   }

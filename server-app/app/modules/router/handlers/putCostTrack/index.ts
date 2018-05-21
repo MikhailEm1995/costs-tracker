@@ -12,11 +12,11 @@ async function putIncomeTrack(data: TrackableData): Promise<any> {
 }
 
 export default (req: any, res: any): void => {
-    const { user_id, number, date, category_id } = req.body;
+    const { user_id, number, date, category_id, comment } = req.body;
 
-    putIncomeTrack({ user_id, number, date, category_id })
+    putIncomeTrack({ user_id, number, date, category_id, comment })
         .then(() => {
-            res.status(200).send('OK');
+            res.status(200).send(JSON.stringify({ status: 'OK' }));
             tracks.killConnection();
         })
         .catch((err) => {

@@ -4,7 +4,7 @@ import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/do";
 import {NotificationsService} from "../notifications/notifications.service";
 
-import {host} from "../../../consts/api";
+import {apiHost} from "../../../consts/config";
 
 class Category {
   id: number;
@@ -47,7 +47,7 @@ export class UserCategoriesService {
 
   public getUserCategories(): void {
     this.http.get<CategoriesResponse>(
-      `${host}/api/categories?id=${UserCategoriesService.userID}`
+      `${apiHost}/api/categories?id=${UserCategoriesService.userID}`
       )
       .subscribe(
         (res: CategoriesResponse) => {
@@ -62,7 +62,7 @@ export class UserCategoriesService {
 
   public putNewCategory(type: number, name: string, color: string): void {
     this.http.put<TypedCategory>(
-      `${host}/api/category`,
+      `${apiHost}/api/category`,
       { user_id: UserCategoriesService.userID, type, name, color }
     )
       .subscribe(
@@ -84,7 +84,7 @@ export class UserCategoriesService {
 
   public deleteCategory(id: number, type: number): void {
     this.http.delete<DeletedCategory>(
-      `${host}/api/category?id=${id}`,
+      `${apiHost}/api/category?id=${id}`,
       {
         withCredentials: false
       }

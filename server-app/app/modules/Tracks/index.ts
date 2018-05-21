@@ -8,6 +8,7 @@ export class TrackableData {
     number: number;
     date: string;
     category_id: number;
+    comment?: string;
 }
 
 export class Tracks {
@@ -57,11 +58,13 @@ export class Tracks {
     }
 
     public putTrack(type: number, data: TrackableData): Promise<any> {
-        const { user_id, number, date, category_id } = data;
-        const query = `INSERT INTO ${this.db}.tracks (user_id, type, number, \`date\`, category_id) VALUES (?, ?, ?, ?, ?)`;
+        let { user_id, number, date, category_id, comment } = data;
+        const query = `INSERT INTO ${this.db}.tracks (user_id, type, number, \`date\`, category_id, comment) VALUES (?, ?, ?, ?, ?, ?)`;
+
+        if (comment === undefined) comment = 'nil';
 
         return new Promise<any>((resolve, reject) => {
-            this.connection.query(query, [user_id, type, number, date, category_id], (err: Error, result: JSON) => {
+            this.connection.query(query, [user_id, type, number, date, category_id, comment], (err: Error, result: JSON) => {
                 if (err) reject(err);
                 resolve(result);
             });
