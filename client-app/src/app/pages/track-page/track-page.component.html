@@ -1,4 +1,11 @@
 <div class="wrapper">
+  <div class="section">
+    <div class="w-100 text-right">
+      <button *ngIf="currentCategoriesType" type="button" class="btn btn-lg btn-outline-success" (click)="handleCategoryTypeClick()">income</button>
+      <button *ngIf="!currentCategoriesType" type="button" class="btn btn-lg btn-outline-danger" (click)="handleCategoryTypeClick()">cost</button>
+    </div>
+  </div>
+
   <div class="card section">
     <label for="number" class="card-header d-block h6">Number</label>
     <div class="card-body">
@@ -14,14 +21,14 @@
   <div class="card section">
     <div class="card-header d-flex flex-row">
       <div class="w-50 text-left h6 d-flex align-items-center">Category</div>
-      <div class="w-50 text-right">
-        <button *ngIf="currentCategoriesType" type="button" class="btn btn-outline-success" (click)="handleCategoryTypeClick()">income</button>
-        <button *ngIf="!currentCategoriesType" type="button" class="btn btn-outline-danger" (click)="handleCategoryTypeClick()">cost</button>
-      </div>
     </div>
     <div class="card-body">
-      <div class="categories">
+      <div [class]="'categories ' + currentCategories.length > 0 ? 'scroll' : ''">
         <div class="btn-group btn-group-toggle btn-group-vertical w-100" data-toggle="buttons">
+          <p *ngIf="currentCategories.length === 0" class="breadcrumb w-100">
+            <span class="breadcrumb-item active">No categories yet</span>
+          </p>
+
           <div *ngFor="let category of currentCategories" class="btn-group w-100">
             <label class="btn btn-outline-info btn-block">
               <input [value]="category.id" type="radio" name="categories" autocomplete="off" (change)="handleCategoryClick($event)">{{ category.name | capitalize }}
@@ -43,24 +50,29 @@
   </div>
 
   <div class="card section">
-    <div class="card-header h6">Date</div>
-    <div class="card-body">
-      <div class="input-group">
-        <input [(ngModel)]="trackModel.date.day" type="number" min="1"  class="form-control" placeholder="dd" title="Day" [value]="trackModel.date.day || ''">
-        <input [(ngModel)]="trackModel.date.month" type="number" min="1" max="12" class="form-control" placeholder="mm" title="Month" [value]="trackModel.date.month || ''">
-        <input [(ngModel)]="trackModel.date.year" type="number" min="1900" [max]="now.getFullYear()" class="form-control" placeholder="yyyy" title="Year" [value]="trackModel.date.year || ''">
-      </div>
-      <div class="d-flex justify-content-end mt-3">
+    <div class="card-header d-flex">
+      <div class="w-50 h6 d-flex align-items-center justify-content-start">Date</div>
+      <div class="w-50 d-flex align-items-center justify-content-end">
         <button type="button" class="btn btn-outline-info" (click)="handleSetTodayClick()">Set today</button>
       </div>
     </div>
+    <div class="card-body d-flex justify-content-center">
+      <ngb-datepicker [(ngModel)]="dateModel"></ngb-datepicker>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div class="card-header h6 d-flex">Comment</div>
+   <div class="card-body form-group">
+     <textarea [(ngModel)]="trackModel.comment" class="form-control" name="comment" id="comment" rows="3" placeholder="Comment for the track"></textarea>
+   </div>
   </div>
 
   <div class="section d-flex flex-row">
-    <div class="w-50 btn-container">
+    <div *ngIf="currentCategoriesType" class="w-100 btn-container">
       <button type="button" class="btn btn-block btn-large btn-success" (click)="handleIncomeButtonClick()">{{ 'Income' | uppercase }}</button>
     </div>
-    <div class="w-50 btn-container">
+    <div *ngIf="!currentCategoriesType" class="w-100 btn-container">
       <button type="button" class="btn btn-block btn-large btn-danger" (click)="handleCostButtonClick()">{{ 'Cost' | uppercase }}</button>
     </div>
   </div>

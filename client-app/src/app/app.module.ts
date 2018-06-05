@@ -19,6 +19,7 @@ import {UserCategoriesService} from "./services/user-categories/user-categories.
 import { LayoutComponent } from './components/layout/layout.component';
 import {NotificationsService} from "./services/notifications/notifications.service";
 import {TracksService} from "./services/tracks/tracks.service";
+import {AuthService} from "./services/auth/auth.service";
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {TracksService} from "./services/tracks/tracks.service";
   providers: [
     UserCategoriesService,
     NotificationsService,
-    TracksService
+    TracksService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

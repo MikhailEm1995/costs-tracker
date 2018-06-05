@@ -14,4 +14,5 @@ export class TrackDataStruct {
   number: number;
   category_id: number;
   date: DateStruct = new DateStruct();
+  comment?: string;
 }

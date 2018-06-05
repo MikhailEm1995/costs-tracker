@@ -5,6 +5,7 @@ import {NotificationsService} from "../../services/notifications/notifications.s
 import {TracksService} from "../../services/tracks/tracks.service";
 
 import * as moment from 'moment';
+import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-track-page',
@@ -15,23 +16,27 @@ export class TrackPageComponent implements OnInit {
 
   trackModel = new TrackDataStruct();
 
-  currentCategories: any;
+  currentCategories: any = [];
   currentCategoriesType: boolean = false;
 
   newCategory = { id: 0, name: '', color: '#000000' };
   now: Date = new Date();
+
+  dateModel: NgbDateStruct;
 
   constructor(
     private userCategories: UserCategoriesService,
     private tracks: TracksService,
     private notifications: NotificationsService
   ) {
-    UserCategoriesService.categoriesPublisher.subscribe((categories: CategoriesResponse) => {
-          this.changeCurrentCategories(categories);
-    });
+    this.dateModel = { year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate() };
   }
 
   ngOnInit() {
+    UserCategoriesService.categoriesPublisher.subscribe((categories: CategoriesResponse) => {
+      this.changeCurrentCategories(categories);
+    });
+
     this.userCategories.getUserCategories();
   }
 
@@ -67,24 +72,25 @@ export class TrackPageComponent implements OnInit {
   public handleSetTodayClick(): void {
     if (!this.trackModel.date) this.trackModel.date = new DateStruct();
 
-    const { date } = this.trackModel;
+    let { date } = this.trackModel;
 
-    date.day = this.now.getDate();
-    date.month = this.now.getMonth() + 1;
-    date.year = this.now.getFullYear();
+    this.dateModel = this.dateModel = { year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate() };
+    date = this.dateModel;
   }
 
   public handleIncomeButtonClick(): void {
-    const { number, category_id, date: { day, month, year } } = this.trackModel;
+    const { number, category_id, comment } = this.trackModel;
+    const { day, month, year } = this.dateModel;
     const formattedDate = moment().set('year', year).set('month', month).set('date', day).format('YYYY-MM-DD');
 
-    this.tracks.putIncomeTrack(number, formattedDate, category_id);
+    this.tracks.putIncomeTrack(number, formattedDate, category_id, comment);
   }
 
   public handleCostButtonClick(): void {
-    const { number, category_id, date: { day, month, year } } = this.trackModel;
+    const { number, category_id, comment } = this.trackModel;
+    const { day, month, year } = this.dateModel;
     const formattedDate = moment().set('year', year).set('month', month).set('date', day).format('YYYY-MM-DD');
 
-    this.tracks.putCostTrack(number, formattedDate, category_id);
+    this.tracks.putCostTrack(number, formattedDate, category_id, comment);
   }
 }

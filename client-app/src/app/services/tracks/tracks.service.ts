@@ -53,11 +53,12 @@ export class TracksService {
       );
   }
 
-  public putIncomeTrack(number: number, date: string, category_id: number): void {
-    this.http.put(
-      `${apiHost}/api/track/income`,
-      { user_id: TracksService.userID, number, date, category_id }
-    )
+  public putIncomeTrack(number: number, date: string, category_id: number, comment: string): void {
+    const body = comment === undefined ?
+      { user_id: TracksService.userID, number, date, category_id } :
+      { user_id: TracksService.userID, number, date, category_id, comment };
+
+    this.http.put(`${apiHost}/api/track/income`, body)
       .subscribe(
         (res) => {
           this.notifications.show('success', 'Success: ', 'Data has been successfully sent');
@@ -69,11 +70,12 @@ export class TracksService {
       );
   }
 
-  public putCostTrack(number: number, date: string, category_id: number): void {
-    this.http.put(
-      `${apiHost}/api/track/cost`,
-      { user_id: TracksService.userID, number, date, category_id }
-    )
+  public putCostTrack(number: number, date: string, category_id: number, comment: string): void {
+    const body = comment === undefined ?
+      { user_id: TracksService.userID, number, date, category_id } :
+      { user_id: TracksService.userID, number, date, category_id, comment };
+
+    this.http.put(`${apiHost}/api/track/cost`, body)
       .subscribe(
         (res) => {
           this.notifications.show('success', 'Success: ', 'Data has been successfully sent');

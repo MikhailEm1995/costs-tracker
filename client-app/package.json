@@ -23,6 +23,7 @@
     "@angular/router": "^5.2.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.1",
     "@types/moment": "^2.13.0",
+    "auth0-js": "^9.5.1",
     "c3": "^0.4.21",
     "core-js": "^2.4.1",
     "mathjs": "^4.0.0",
