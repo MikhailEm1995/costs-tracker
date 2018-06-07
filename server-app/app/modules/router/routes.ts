@@ -17,7 +17,13 @@ export const routes: any = {
     get: {
         "/api/tracks/month": path.resolve(__dirname, './handlers/getMonthTracks'),
         "/api/tracks/year": path.resolve(__dirname, './handlers/getYearTracks'),
-        "/api/categories": path.resolve(__dirname, './handlers/getUserCategories')
+        "/api/categories": path.resolve(__dirname, './handlers/getUserCategories'),
+        "/api/balance": path.resolve(__dirname, './handlers/getCurrentBalance'),
+        "/api/balances/month/current": path.resolve(__dirname, './handlers/getCurrentMonthBalances'),
+        "/api/balances/year/current": path.resolve(__dirname, './handlers/getCurrentYearBalances'),
+        "/api/balances/month/previous": path.resolve(__dirname, './handlers/getPreviousMonthBalances'),
+        "/api/balances/year/previous": path.resolve(__dirname, './handlers/getPreviousYearBalances'),
+        "/api/balances": path.resolve(__dirname, './handlers/getBalances')
     },
     put: {
         "/api/track/income": {
@@ -30,6 +36,14 @@ export const routes: any = {
         },
         "/api/category": {
             handler: path.resolve(__dirname, './handlers/putNewCategory'),
+            middlewares: [express.json()]
+        },
+        "/api/balance/add": {
+            handler: path.resolve(__dirname, './handlers/putIncreasedBalance'),
+            middlewares: [express.json()]
+        },
+        "/api/balance/subtract": {
+            handler: path.resolve(__dirname, './handlers/putDecreasedBalance'),
             middlewares: [express.json()]
         }
     },

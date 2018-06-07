@@ -1,18 +1,18 @@
-import {Categories} from "../../../Categories/index";
+import {Balances} from "../../../Balances/index.js";
 
-let categories = new Categories();
+let balances = new Balances();
 
 export default (req: any, res: any): void => {
-    categories.connect();
+    balances.connect();
 
-    categories.getUserCategories(req.query.id)
+    balances.getCurrentMonthBalances(req.query.id)
         .then((result) => {
             res.status(200).send(JSON.stringify(result));
-            categories.killConnection();
+            balances.killConnection();
         })
         .catch((err) => {
             console.error(err);
-            categories.killConnection();
+            balances.killConnection();
             res.statuc(500).send('Internal server error');
         });
 };
