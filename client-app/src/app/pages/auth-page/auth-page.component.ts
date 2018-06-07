@@ -7,13 +7,12 @@ import {AuthService} from "../../services/auth/auth.service";
   styleUrls: ['./auth-page.component.scss']
 })
 export class AuthPageComponent implements OnInit {
-
   constructor(
     private auth: AuthService
   ) { }
 
   ngOnInit() {
-    this.auth.login();
+    this.auth.loginFromContainer('auth-container');
   }
 
 }

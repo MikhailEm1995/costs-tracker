@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import TextWidget from '../../../consts/classes/TextWidgetConfig';
+import TextWidget from '../../../utils/TextWidgetConfig';
 
 import * as math from 'mathjs';
 

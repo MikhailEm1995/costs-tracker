@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input} from '@angular/core';
-import PlotWidget from '../../../consts/classes/PlotWidgetConfig';
+import PlotWidget from '../../../utils/PlotWidgetConfig';
 
 import * as c3 from 'c3';
 

@@ -20,6 +20,8 @@ import { LayoutComponent } from './components/layout/layout.component';
 import {NotificationsService} from "./services/notifications/notifications.service";
 import {TracksService} from "./services/tracks/tracks.service";
 import {AuthService} from "./services/auth/auth.service";
+import { AuthCallbackComponent } from './pages/auth-callback/auth-callback.component';
+import { AuthCallbackPageComponent } from './pages/auth-callback-page/auth-callback-page.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import {AuthService} from "./services/auth/auth.service";
     PlotWidgetComponent,
     TextWidgetComponent,
     CapitalizePipe,
-    LayoutComponent
+    LayoutComponent,
+    AuthCallbackPageComponent
   ],
   imports: [
     AppRoutingModule,

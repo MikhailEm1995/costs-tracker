@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, AfterViewInit} from '@angular/core';
-import TextWidget from '../../../consts/classes/TextWidgetConfig';
-import PlotWidget from '../../../consts/classes/PlotWidgetConfig';
+import TextWidget from '../../../utils/TextWidgetConfig';
+import PlotWidget from '../../../utils/PlotWidgetConfig';
 
 import * as math from 'mathjs';
 import * as c3 from 'c3';
