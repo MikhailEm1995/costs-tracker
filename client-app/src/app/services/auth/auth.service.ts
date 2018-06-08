@@ -24,8 +24,6 @@ export class AuthService {
   private onAuth(authResult): void {
     AuthService.AUTH_RESULT = authResult;
 
-    console.log(authResult);
-
     this.setSession(authResult);
     this.getUserInfo();
   }
@@ -43,7 +41,9 @@ export class AuthService {
     AuthService.lock = new authLock.Auth0Lock('GvD2dfwfn14HV88XRUQR8u9TZ0vsj584', 'memchenko.auth0.com', {
       container,
       auth: {
-        responseType: 'token id_token'
+        redirectUrl: 'http://localhost:4200/auth-callback',
+        responseType: 'token id_token',
+        redirect: false
       }
     });
 

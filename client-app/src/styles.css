@@ -2,3 +2,7 @@
 body {
   padding-bottom: 10px;
 }
+
+body, html {
+  height: 100%;
+}
