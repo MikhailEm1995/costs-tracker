@@ -11,7 +11,7 @@ export class Balances {
 
     public connect(): Balances {
         this.db = tracksDatabase;
-        this.connection = mysql.createConnection({ host, user: username, password, database: tracksDatabase });
+        this.connection = mysql.createConnection({ host, user: username, password, database: tracksDatabase, multipleStatements: true });
 
         return this;
     }
@@ -24,12 +24,16 @@ export class Balances {
     }
 
     public addToBalance(user_id: number, num: number): Promise<any> {
-        const setVarQuery = `SET @balance := (SELECT balance FROM costs_tracker.balances WHERE user_id=? ORDER BY \`datetime\` DESC LIMIT 1);`;
-        const insertQuery = `INSERT INTO costs_tracker.balances (user_id, \`datetime\`, balance) VALUES (?, ?, IF(@balance is null, ?, @balance+?))`;
-        const date = moment().format('YYYY-MM-DD HH:MM:SS');
+        const setVarQuery = `SET @balance := (SELECT balance FROM ${this.db}.balances WHERE user_id=? AND MONTH(\`datetime\`)=MONTH(NOW()) ORDER BY \`datetime\` DESC LIMIT 1);`;
+        const insertQuery = `INSERT INTO ${this.db}.balances (user_id, \`datetime\`, balance) VALUES (?, ?, (IF(@balance is null, ?, @balance+?)));`;
+        const selectQuery = `SELECT * FROM ${this.db}.balances WHERE user_id=? AND MONTH(\`datetime\`)=MONTH(?) GROUP BY DAY(\`datetime\`) ORDER BY \`datetime\` ASC LIMIT 30`;
+        const datetime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+        const query = setVarQuery + insertQuery + selectQuery;
+        const vars = [user_id, user_id, datetime, num, num, user_id, datetime];
 
         return new Promise((resolve, reject) => {
-            this.connection.query(setVarQuery + insertQuery, [user_id, user_id, date, num, num], (err: Error, result: any) => {
+            this.connection.query(query, vars, (err: Error, result: JSON) => {
                 if (err) reject(err);
                 resolve(result);
             });
@@ -37,15 +41,53 @@ export class Balances {
     }
 
     public subtractFromBalance(user_id: number, num: number): Promise<any> {
-        const setVarQuery = `SET @balance := (SELECT balance FROM costs_tracker.balances WHERE user_id=? ORDER BY \`datetime\` DESC LIMIT 1);`;
-        const insertQuery = `INSERT INTO costs_tracker.balances (user_id, \`datetime\`, balance) VALUES (?, ?, IF(@balance is null, ?, @balance-?))`;
-        const date = moment().format('YYYY-MM-DD HH:MM:SS');
+        const setVarQuery = `SET @balance := (SELECT balance FROM ${this.db}.balances WHERE user_id=? AND MONTH(\`datetime\`)=MONTH(NOW()) ORDER BY \`datetime\` DESC LIMIT 1);`;
+        const insertQuery = `INSERT INTO ${this.db}.balances (user_id, \`datetime\`, balance) VALUES (?, ?, (IF(@balance is null, ?, @balance-?)));`;
+        const selectQuery = `SELECT * FROM ${this.db}.balances WHERE user_id=? AND MONTH(\`datetime\`)=MONTH(?) GROUP BY DAY(\`datetime\`) ORDER BY \`datetime\` ASC LIMIT 30`;
+        const datetime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+        const query = setVarQuery + insertQuery + selectQuery;
+        const vars = [user_id, user_id, datetime, num, num, user_id, datetime];
 
         return new Promise((resolve, reject) => {
-            this.connection.query(setVarQuery + insertQuery, [user_id, user_id, date, num, num], (err: Error, result: any) => {
+            this.connection.query(query, vars, (err: Error, result: JSON) => {
                 if (err) reject(err);
                 resolve(result);
             });
+        });
+    }
+
+    public updateBalancesAdd(user_id: number, num: number, date: string): Promise<any> {
+        const updateOneRowQuery = `UPDATE ${this.db}.balances SET balance=(balance+?) WHERE user_id=? AND DATE(\`datetime\`)<=DATE(?) ORDER BY id DESC LIMIT 1;`;
+        const updateDependingRowsQuery = `UPDATE ${this.db}.balances SET balance=(balance+?) WHERE user_id=? AND DATE(\`datetime\`)>DATE(?);`;
+        const selectQuery = `SELECT * FROM ${this.db}.balances WHERE user_id=? AND MONTH(\`datetime\`)=MONTH(?) GROUP BY DAY(\`datetime\`) ORDER BY \`datetime\` LIMIT 30`;
+        const datetime = moment(date).format('YYYY-MM-DD HH:mm:ss');
+
+        return new Promise((resolve, reject) => {
+            this.connection.query(
+                updateOneRowQuery + updateDependingRowsQuery + selectQuery,
+                [num, user_id, datetime, num, user_id, datetime, user_id, datetime],
+                (err: Error, result: JSON) => {
+                    if (err) reject(err);
+                    resolve(result);
+                });
+        });
+    }
+
+    public updateBalancesSubtract(user_id: number, num: number, date: string): Promise<any> {
+        const updateOneRowQuery = `UPDATE ${this.db}.balances SET balance=(balance-?) WHERE user_id=? AND DATE(\`datetime\`)<=DATE(?) ORDER BY id DESC LIMIT 1;`;
+        const updateDependingRowsQuery = `UPDATE ${this.db}.balances SET balance=(balance-?) WHERE user_id=? AND DATE(\`datetime\`)>DATE(?);`;
+        const selectQuery = `SELECT * FROM ${this.db}.balances WHERE user_id=? AND MONTH(\`datetime\`)=MONTH(?) GROUP BY DAY(\`datetime\`) ORDER BY \`datetime\` LIMIT 30`;
+        const datetime = moment(date).format('YYYY-MM-DD HH:mm:ss');
+
+        return new Promise((resolve, reject) => {
+            this.connection.query(
+                updateOneRowQuery + updateDependingRowsQuery + selectQuery,
+                [num, user_id, datetime, num, user_id, datetime, user_id, datetime],
+                (err: Error, result: JSON) => {
+                    if (err) reject(err);
+                    resolve(result);
+                });
         });
     }
 
@@ -53,7 +95,7 @@ export class Balances {
         const query = `SELECT (balance) FROM ${this.db}.balances WHERE user_id=? ORDER BY \`datetime\` DESC LIMIT 1`;
 
         return new Promise((resolve, reject) => {
-            this.connection.query(query, [user_id], (err: Error, result: any) => {
+            this.connection.query(query, [user_id], (err: Error, result: JSON) => {
                 if (err) reject(err);
                 resolve(result);
             });
@@ -64,7 +106,7 @@ export class Balances {
         const query = `SELECT * FROM ${this.db}.balances WHERE user_id=? AND MONTH(\`datetime\`)=MONTH(?) GROUP BY DAY(\`datetime\`) ORDER BY id ASC`;
 
         return new Promise((resolve, reject) => {
-            this.connection.query(query, [user_id, this.now.format('YYYY-MM-DD HH:MM:SS')], (err: Error, result: any) => {
+            this.connection.query(query, [user_id, this.now.format('YYYY-MM-DD HH:mm:ss')], (err: Error, result: JSON) => {
                 if (err) reject(err);
                 resolve(result);
             })
@@ -75,7 +117,7 @@ export class Balances {
         const query = `SELECT SUM(balance), \`datetime\` FROM ${this.db}.balances WHERE user_id=? AND YEAR(\`datetime\`)=YEAR(?) GROUP BY MONTH(\`datetime\`) ORDER BY \`datetime\` ASC`;
 
         return new Promise((resolve, reject) => {
-            this.connection.query(query, [user_id, this.now.format('YYYY-MM-DD HH:MM:SS')], (err: Error, result: any) => {
+            this.connection.query(query, [user_id, this.now.format('YYYY-MM-DD HH:mm:ss')], (err: Error, result: JSON) => {
                 if (err) reject(err);
                 resolve(result);
             })
@@ -83,11 +125,11 @@ export class Balances {
     }
 
     public getPreviousMonthBalances(user_id: number): Promise<any> {
-        const previousMonth = moment().set('month', this.now.get('month') - 1).format('YYYY-MM-DD HH:MM:SS');
+        const previousMonth = moment().set('month', this.now.get('month') - 1).format('YYYY-MM-DD HH:mm:SS');
         const query = `SELECT * FROM ${this.db}.balances WHERE user_id=? AND MONTH(\`datetime\`)=MONTH(?) GROUP BY DAY(\`datetime\`) ORDER BY \`datetime\` ASC`;
 
         return new Promise((resolve, reject) => {
-            this.connection.query(query, [user_id, previousMonth], (err: Error, result: any) => {
+            this.connection.query(query, [user_id, previousMonth], (err: Error, result: JSON) => {
                 if (err) reject(err);
                 resolve(result);
             });
@@ -95,11 +137,11 @@ export class Balances {
     }
 
     public getPreviousYearBalances(user_id: number): Promise<any> {
-        const previousYear = moment().set('year', this.now.get('year') - 1).format('YYYY-MM-DD HH:MM:SS');
+        const previousYear = moment().set('year', this.now.get('year') - 1).format('YYYY-MM-DD HH:mm:SS');
         const query = `SELECT SUM(balance), \`datetime\` FROM ${this.db}.balances WHERE user_id=? AND YEAR(\`datetime\`)=YEAR(?) GROUP BY MONTH(\`datetime\`) ORDER BY \`datetime\` ASC`;
 
         return new Promise((resolve, reject) => {
-            this.connection.query(query, [user_id, previousYear], (err: Error, result: any) => {
+            this.connection.query(query, [user_id, previousYear], (err: Error, result: JSON) => {
                 if (err) reject(err);
                 resolve(result);
             });
@@ -116,7 +158,7 @@ export class Balances {
         }
 
         return new Promise((resolve, reject) => {
-            this.connection.query(query, vars, (err: Error, result: any) => {
+            this.connection.query(query, vars, (err: Error, result: JSON) => {
                 if (err) reject(err);
                 resolve(result);
             });
