@@ -1,8 +1,30 @@
 import {TrackableData, Tracks} from "../../../Tracks/index";
+import {Balances} from "../../../Balances/index.js";
+import * as moment from "moment";
+
 const tracks = new Tracks();
+const balances = new Balances();
 
 async function putIncomeTrack(data: TrackableData): Promise<any> {
+    const isDateBefore = moment(data.date).isBefore(new Date().getTime());
+
     try {
+        if (isDateBefore) {
+            let isBalanceUpdated = false;
+
+            balances.connect();
+            balances.updateBalancesAdd(data.user_id, data.number, data.date)
+                .then(() => {
+                    isBalanceUpdated = true;
+                    balances.killConnection();
+                })
+                .catch(err => console.log(err));
+
+            if (!isBalanceUpdated) {
+                return Promise.reject(new Error("Not updated"));
+            }
+        }
+
         tracks.connect();
         await tracks.putTrack(2, data);
     } catch(err) {

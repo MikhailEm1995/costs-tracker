@@ -32,7 +32,6 @@ export default (req: any, res: any): void => {
 
     putDecreasedBalance(user_id, num, date)
         .then((result) => {
-            console.log(result);
             res.status(200).send(JSON.stringify(result));
             balances.killConnection();
         })
