@@ -9,18 +9,17 @@ import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 import { WidgetPageComponent } from './pages/widget-page/widget-page.component';
 import { TrackPageComponent } from './pages/track-page/track-page.component';
 import { NewWidgetPageComponent } from './pages/new-widget-page/new-widget-page.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule} from '@angular/forms';
 import { PlotWidgetComponent } from './components/plot-widget/plot-widget.component';
 import { TextWidgetComponent } from './components/text-widget/text-widget.component';
 import { CapitalizePipe } from './pipes/capitalize/capitalize.pipe';
-import {AppRoutingModule} from "./modules/app-routing/app-routing.module";
-import {HttpClientModule} from "@angular/common/http";
-import {UserCategoriesService} from "./services/user-categories/user-categories.service";
+import {AppRoutingModule} from './modules/app-routing/app-routing.module';
+import {HttpClientModule} from '@angular/common/http';
+import {UserCategoriesService} from './services/user-categories/user-categories.service';
 import { LayoutComponent } from './components/layout/layout.component';
-import {NotificationsService} from "./services/notifications/notifications.service";
-import {TracksService} from "./services/tracks/tracks.service";
-import {AuthService} from "./services/auth/auth.service";
-import { AuthCallbackComponent } from './pages/auth-callback/auth-callback.component';
+import {NotificationsService} from './services/notifications/notifications.service';
+import {TracksService} from './services/tracks/tracks.service';
+import {AuthService} from './services/auth/auth.service';
 import { AuthCallbackPageComponent } from './pages/auth-callback-page/auth-callback-page.component';
 
 @NgModule({
